@@ -1,27 +1,33 @@
 % Notes
 
 
-```
-S -> e, 0, 1
-S -> 1S1, 0S0, 0S1, 1S0
-```
 
-$$\usetikzlibrary{automata}\tikzset{initial text=}\begin{tikzpicture}[scale=2]
-    \node[state,initial]at(0,0)(l){$w$};
-    \node[state,accepting]at(2,0)(r){$w^R$};
-    \path[->]
-        (r)edge[loop above] node[above]{\begin{tabular}{c}
-            $1:1\to\epsilon$\\
-            $0:0\to\epsilon$\\
-        \end{tabular}}()
-        (l)edge[loop above] node[above]{\begin{tabular}{c}
-            $1:\epsilon\to1$\\
-            $0:\epsilon\to0$\\
-        \end{tabular}}()
-           edge node[above]{\begin{tabular}{c}
-            $\epsilon:\epsilon\to\epsilon$\\
-            $0:\epsilon\to\epsilon$\\
-            $1:\epsilon\to\epsilon$\\
-        \end{tabular}}(r);
-\end{tikzpicture}$$
+- given $f(L)=\{uv:u,v\in\Sigma^\ast\enspace c\in\Sigma\enspace ucv\in L\}$
+- wts $f$ perserves regular language
 
+
+assume $L$ is regular
+
+- $\therefore\exists$ DFSA $M=(Q=\{q_i\},\Sigma,\delta,s,F)$ st $L=\mathcal L(M)$
+- let DFSA $(C=\{c_i\},\Sigma,\delta_c,s_c,F_c)$ be a copy of $M$
+  - i.e. $\forall i\forall a\in\Sigma\enspace\delta(q_i,a)=q_j\iff\delta_c(c_i,a)=c_j$ for some $j$
+
+let NFSA $M'=(Q\cup C,\Sigma,\delta',s,F_c)$ where
+
+$$\begin{align*}
+  \forall i\forall a\in\Sigma\enspace\delta'(q_i,a)&=\{\delta(q_i,a)\}\cup\{\delta_c^\ast(c_i,ac):c\in\Sigma\}\\
+  \delta'(c_i,a)&=\{\delta_c(c_i,a)\}\\
+  \therefore\forall i\forall a\in\Sigma\enspace c_i\in\delta'^\ast(s,u)&\iff\delta_c^\ast(s_c,ua)=c_i\textsf{ for some }u\in\Sigma^\ast\tag{\sf 1}\\
+\end{align*}$$
+
+$$\begin{align*}
+\therefore\forall x\in\Sigma^\ast&\\
+  x\in\mathcal L(M')\iff&\delta'^\ast(s,x)\cap F_c\ne\varnothing\\
+  \iff&\exist u,v\in\Sigma^\ast\exist i\textsf{ st }\enspace x=uv\\
+  &\delta'^\ast(s,u)=\{q_i,c_j\}\\
+  &\delta'^\ast(c_j,v)\cap F_c\ne\varnothing\\
+  \iff&\exists a\in\Sigma\enspace\delta_c^\ast(s_c,ua)=c_j\textsf{ and }\delta_c^\ast(c_j,v)\in F_c\tag{\sf by 1}\\
+  \iff&\delta_c^\ast(s_c,uav)\in F_c\\
+  \iff&uav\in L\\
+  \iff&x=uv\in f(L)\quad\blacksquare\\
+\end{align*}$$

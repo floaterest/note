@@ -1,0 +1,33 @@
+% Notes
+
+
+
+- given $$f(L)=\{uv:u,v\in\Sigma^\ast\enspace c\in\Sigma\enspace ucv\in L\}$$
+- wts $$f$$ perserves regular language
+
+
+assume $$L$$ is regular
+
+- $$\therefore\exists$$ DFSA $$M=(Q=\{q_i\},\Sigma,\delta,s,F)$$ st $$L=\mathcal L(M)$$
+- let DFSA $$(C=\{c_i\},\Sigma,\delta_c,s_c,F_c)$$ be a copy of $$M$$
+  - i.e. $$\forall i\forall a\in\Sigma\enspace\delta(q_i,a)=q_j\iff\delta_c(c_i,a)=c_j$$ for some $$j$$
+
+let NFSA $$M'=(Q\cup C,\Sigma,\delta',s,F_c)$$ where
+
+$$\begin{align*}
+  \forall i\forall a\in\Sigma\enspace\delta'(q_i,a)&=\{\delta(q_i,a)\}\cup\{\delta_c^\ast(c_i,ac):c\in\Sigma\}\\
+  \delta'(c_i,a)&=\{\delta_c(c_i,a)\}\\
+  \therefore\forall i\forall a\in\Sigma\enspace c_i\in\delta'^\ast(s,u)&\iff\delta_c^\ast(s_c,ua)=c_i\textsf{ for some }u\in\Sigma^\ast\tag{1}\\
+\end{align*}$$
+
+$$\begin{align*}
+\therefore\forall x\in\Sigma^\ast&\\
+  x\in\mathcal L(M')\iff&\delta'^\ast(s,x)\cap F_c\ne\varnothing\\
+  \iff&\exists u,v\in\Sigma^\ast\exists i\textsf{ st }\enspace x=uv\\
+  &\delta'^\ast(s,u)=\{q_i,c_j\}\\
+  &\delta'^\ast(c_j,v)\cap F_c\ne\varnothing\\
+  \iff&\exists a\in\Sigma\enspace\delta_c^\ast(s_c,ua)=c_j\textsf{ and }\delta_c^\ast(c_j,v)\in F_c\tag{by 1}\\
+  \iff&\delta_c^\ast(s_c,uav)\in F_c\\
+  \iff&uav\in L\\
+  \iff&x=uv\in f(L)\quad\blacksquare\\
+\end{align*}$$
