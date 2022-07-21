@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Notes</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script defer="defer" src="./script.js"></script>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Notes</h1>
+</header>
+<ul>
+<li>given <span class="math inline">f(L)=\{uv:u,v\in\Sigma^\ast\enspace
+c\in\Sigma\enspace ucv\in L\}</span></li>
+<li>wts <span class="math inline">f</span> perserves regular
+language</li>
+</ul>
+<p>assume <span class="math inline">L</span> is regular</p>
+<ul>
+<li><span class="math inline">\therefore\exists</span> DFSA <span
+class="math inline">M=(Q=\{q_i\},\Sigma,\delta,s,F)</span> st <span
+class="math inline">L=\mathcal L(M)</span></li>
+<li>let DFSA <span
+class="math inline">(C=\{c_i\},\Sigma,\delta_c,s_c,F_c)</span> be a copy
+of <span class="math inline">M</span>
+<ul>
+<li>i.e. <span class="math inline">\forall i\forall
+a\in\Sigma\enspace\delta(q_i,a)=q_j\iff\delta_c(c_i,a)=c_j</span> for
+some <span class="math inline">j</span></li>
+</ul></li>
+</ul>
+<p>let NFSA <span class="math inline">M&#39;=(Q\cup
+C,\Sigma,\delta&#39;,s,F_c)</span> where</p>
+<p><span class="math display">\begin{align*}
+  \forall i\forall
+a\in\Sigma\enspace\delta&#39;(q_i,a)&amp;=\{\delta(q_i,a)\}\cup\{\delta_c^\ast(c_i,ac):c\in\Sigma\}\\
+  \delta&#39;(c_i,a)&amp;=\{\delta_c(c_i,a)\}\\
+  \therefore\forall i\forall a\in\Sigma\enspace
+c_i\in\delta&#39;^\ast(s,u)&amp;\iff\delta_c^\ast(s_c,ua)=c_i\textsf{
+for some }u\in\Sigma^\ast\tag{\sf 1}\\
+\end{align*}</span></p>
+<p><span class="math display">\begin{align*}
+\therefore\forall x\in\Sigma^\ast&amp;\\
+  x\in\mathcal L(M&#39;)\iff&amp;\delta&#39;^\ast(s,x)\cap
+F_c\ne\varnothing\\
+  \iff&amp;\exist u,v\in\Sigma^\ast\exist i\textsf{ st }\enspace x=uv\\
+  &amp;\delta&#39;^\ast(s,u)=\{q_i,c_j\}\\
+  &amp;\delta&#39;^\ast(c_j,v)\cap F_c\ne\varnothing\\
+  \iff&amp;\exists a\in\Sigma\enspace\delta_c^\ast(s_c,ua)=c_j\textsf{
+and }\delta_c^\ast(c_j,v)\in F_c\tag{\sf by 1}\\
+  \iff&amp;\delta_c^\ast(s_c,uav)\in F_c\\
+  \iff&amp;uav\in L\\
+  \iff&amp;x=uv\in f(L)\quad\blacksquare\\
+\end{align*}</span></p>
+</body>
+</html>
